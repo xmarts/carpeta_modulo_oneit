@@ -1,0 +1,121 @@
+<odoo>
+  <!--INICIO VISTA VENTA POR COMERCIAL-->
+  <record id="view_venta_por_comercial" model="ir.ui.view">
+    <field name="name">view.venta.por.comercial</field>
+    <field name="model">sale.order</field>
+    <field name="type">tree</field>
+    <field name="arch" type="xml">
+      <tree string="Venta por comercial">
+        <field name="confirmation_date" string="Fecha de confirmación"/>
+        <field name="user_id" string="Comercial"/>
+        <field name="partner_id" string="Cliente"/>
+        <field name="id" string="# Presupuesto" class="text-center"/>
+        <field name="amount_total" string="Monto"/>
+        <field name="team_id" string="Equipo de ventas" class="text-center"/>
+        <field name="state" invisible="1"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="action_venta_por_comercial" model="ir.actions.act_window">
+    <field name="name">Venta por comercial</field>
+    <field name="res_model">sale.order</field>
+    <field name="context">{'group_by':'user_id'}</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field eval="False" name="view_id"/>
+    <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+  </record>
+
+  <record id="action_sale_order_tree1_view1" model="ir.actions.act_window.view">
+    <field eval="1" name="sequence"/>
+    <field name="view_mode">tree</field>
+    <field name="view_id" ref="view_venta_por_comercial"/>
+    <field name="act_window_id" ref="action_venta_por_comercial"/>
+  </record>
+
+  <menuitem action="action_venta_por_comercial" id="planned_task_line2" name="Venta por comercial" parent="sale.menu_report_product_all" sequence="4"/>
+
+  <!--FIN VISTA VENTA POR COMERCIAL-->
+
+
+  <!--INICIO VISTA VENTAS-CUENTAS POR COBRAR-->
+  <record id="view_venta_cuentas_cobrar" model="ir.ui.view">
+    <field name="name">view.venta.por.comercial</field>
+    <field name="model">account.invoice</field>
+    <field name="type">tree</field>
+    <field name="arch" type="xml">
+      <tree string="Venta-cuentas por cobrar">
+        <field name="id_venta" string="ID cotización"/>
+        <field name="partner_id" string="Cliente"/>
+        <field name="total_venta" string="Total de cotización"/>
+        <field name="amount_total" string="Facturado (al dia)"/>
+        <field name="monto_deuda" string="Pagado (al dia)"/>
+        <field name="saldo_cobrar" string="Saldo por cobrar sin facturar"/>
+        <field name="state" invisible="1"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="action_venta_cuentas" model="ir.actions.act_window">
+    <field name="name">Cuentas por cobrar</field>
+    <field name="res_model">account.invoice</field>
+    <field name="view_type">form</field>
+    <field name="domain">[('state','=','open'),('type','=','out_invoice')]</field>
+    <field name="view_mode">tree,form</field>
+    <field eval="False" name="view_id"/>
+    <field name="search_view_id" ref="account.invoice_tree_with_onboarding"/>
+  </record>
+
+  <record id="action_ventas_cuentas_view" model="ir.actions.act_window.view">
+    <field eval="1" name="sequence"/>
+    <field name="view_mode">tree</field>
+    <field name="view_id" ref="view_venta_cuentas_cobrar"/>
+    <field name="act_window_id" ref="action_venta_cuentas"/>
+  </record>
+
+  <menuitem action="action_venta_cuentas" id="menuitem_ventas_ceuntas" name="Cuentas por cobrar" parent="sale.menu_report_product_all" sequence="6"/>
+
+  <!--FIN VISTA VENTAS-CUENTAS POR COBRAR-->
+
+
+   <!--INICIO VISTA COMPRAS-CUENTAS POR COBRAR-->
+  <record id="view_compras_cuentas_cobrar" model="ir.ui.view">
+    <field name="name">view.compras.cuentas.cobrar</field>
+    <field name="model">account.invoice</field>
+    <field name="type">tree</field>
+    <field name="arch" type="xml">
+      <tree string="Cuentas por cobrar">
+        <field name="id_compra" string="ID OC"/>
+        <field name="partner_id" string="Proveedor"/>
+        <field name="total_compra" string="Total de OC"/>
+        <field name="amount_total" string="Facturado (al dia)"/>
+        <field name="monto_deuda" string="Pagado (al dia)"/>
+        <field name="saldo_cobrar" string="Saldo por facturar de OC"/>
+        <field name="saldo_pagar" string="Saldo por pagar de OC"/>
+        <field name="state" invisible="1"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="action_compras_cuentas_cobrar" model="ir.actions.act_window">
+    <field name="name">Cuentas por cobrar</field>
+    <field name="res_model">account.invoice</field>
+    <field name="view_type">form</field>
+    <field name="domain">[('state','=','open'),('type','=','in_invoice')]</field>
+    <field name="view_mode">tree,form</field>
+    <field eval="False" name="view_id"/>
+    <field name="search_view_id" ref="account.invoice_tree_with_onboarding"/>
+  </record>
+
+  <record id="action_compras_cuentas_view" model="ir.actions.act_window.view">
+    <field eval="1" name="sequence"/>
+    <field name="view_mode">tree</field>
+    <field name="view_id" ref="view_compras_cuentas_cobrar"/>
+    <field name="act_window_id" ref="action_compras_cuentas_cobrar"/>
+  </record>
+
+  <menuitem action="action_compras_cuentas_cobrar" id="menuitem_compras_cuentas_cobrar" name="Cuentas por cobrar" parent="purchase.purchase_report" sequence="99"/>
+
+  <!--FIN VISTA CUENTAS-CUENTAS POR COBRAR-->
+</odoo>
