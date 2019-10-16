@@ -52,3 +52,16 @@ class AccountInvoice(models.Model):
 
                     self.saldo_pagar = self.total_compra -self.monto_deuda
 
+class StockMove(models.Model):
+    _inherit = 'stock.move'
+
+    stock_provider = fields.Char(string="Proveedor", compute="_compute_origin")
+
+    @api.one
+    def _compute_origin(self):
+        if self.origin:
+            obj_compra = self.env['purchase.order'].search([('name','=',self.origin)], limit=1)
+            if obj_compra:
+                self.stock_provider = obj_compra.partner_id.name
+
+
